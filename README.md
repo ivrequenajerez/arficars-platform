@@ -69,3 +69,115 @@ This repository intentionally avoids premature complexity. The following are exp
 ├─ .gitattributes
 ├─ .gitignore
 └─ README.md
+````
+
+## Main components
+
+### `backend/arfi-core-api`
+
+Main business backend.
+
+It will host the ARFICARS core API as a Spring Boot application, following a modular monolith approach with explicit module boundaries and hexagonal architecture inside each module.
+
+### `frontend/apps/arfi-public-web`
+
+Public web application.
+
+It will serve the public catalogue, vehicle detail pages, brand presentation and lead/contact entry points, with strong SEO orientation.
+
+### `frontend/apps/arfi-admin-web`
+
+Admin web application.
+
+It will serve authenticated internal workflows such as vehicle management, media management, publication control and lead review.
+
+### `infra/compose`
+
+Local infrastructure baseline.
+
+It will contain the Docker Compose setup for:
+
+* PostgreSQL
+* Keycloak
+* object storage
+
+The purpose of this directory is to provide repeatable local infrastructure without forcing the application runtimes themselves into containers during normal development.
+
+### `docs`
+
+Architecture and engineering documentation.
+
+This directory will contain:
+
+* architecture baseline
+* repository strategy
+* local development guide
+* ADRs
+* future technical reference documents
+
+## Development model
+
+The baseline development model is intentionally simple:
+
+* infrastructure services run with Docker Compose
+* backend runs locally from IntelliJ
+* frontend apps run locally from VS Code or terminal
+* documentation is versioned in the same repository
+* CI validates the baseline continuously
+
+This keeps iteration fast while preserving realistic dependencies.
+
+## Current status
+
+This repository is currently in **bootstrap phase**.
+
+The purpose of the current phase is to produce the initial baseline for development, including:
+
+* monorepo structure
+* base documentation
+* backend scaffolding
+* frontend scaffolding
+* local infrastructure setup
+* basic CI pipeline
+
+No business implementation is expected yet. At this point, structure and discipline matter more than ornamental progress.
+
+## Planned bootstrap deliverables
+
+The first milestone is considered complete only when all of the following exist:
+
+* repository base structure
+* `README.md`
+* `docs/architecture.md`
+* `docs/adr/ADR-001.md` to `ADR-005.md`
+* `backend/arfi-core-api`
+* `frontend/apps/arfi-public-web`
+* `frontend/apps/arfi-admin-web`
+* `infra/compose/compose.yaml`
+* basic GitHub Actions CI workflow
+* evidence that the baseline builds and starts correctly
+
+## Documentation
+
+The repository documentation will progressively define:
+
+* architecture baseline
+* repository strategy
+* local development conventions
+* architectural decision records
+* implementation boundaries for the bootstrap phase
+
+## Working principles
+
+This repository follows a few non-negotiable principles:
+
+* business usefulness first
+* modularity before distribution
+* explicit boundaries
+* no generic shared dumping ground
+* no decorative enterprise complexity
+* documentation that explains actual decisions, not aspirations
+
+## License
+
+License to be defined.
