@@ -1,53 +1,81 @@
 # ARFICARS Platform
 
-ARFICARS Platform is the initial monorepo for the ARFICARS digital platform.
+ARFICARS Platform es el monorepo inicial de la plataforma digital de ARFICARS.
 
-The project is built around a real automotive workshop and is intended to support the professional publication, management and commercialisation of selected used and restored vehicles. Its initial scope is not a marketplace of third parties, but a product-owned commercial catalogue with a public website, an internal backoffice, media management and lead capture.
+El proyecto nace alrededor de un taller real y busca cubrir dos necesidades principales:
 
-This repository contains the first technical baseline of the platform:
-- a Spring Boot core backend
-- a public Nuxt application
-- an admin Nuxt application
-- local infrastructure for development
-- architecture and decision documentation
+1. ayudar a gestionar la actividad interna del taller
+2. ayudar a publicar y gestionar coches en venta de forma profesional
 
-## Purpose
+La idea no es crear solo una web de catálogo. La idea es construir una base digital del negocio: una plataforma con backoffice para el taller, una web pública para mostrar coches y, más adelante, una app móvil para que el equipo pueda operar también desde iOS y Android.
 
-The goal of this repository is to provide a clean, explainable and executable baseline for ARFICARS.
+Este repositorio contiene la primera base técnica del proyecto:
+- un backend principal con Spring Boot
+- una aplicación pública con Nuxt
+- una aplicación de administración con Nuxt
+- infraestructura local para desarrollo
+- documentación de arquitectura y decisiones técnicas
 
-It is designed to serve two purposes at the same time:
-1. support a real product with real business constraints
-2. establish a technically serious foundation that can evolve without being rebuilt from scratch
+## Propósito
 
-At this stage, the priority is not feature breadth. It is architectural clarity, disciplined bootstrapping and a reliable local development setup.
+El objetivo de este repositorio es dejar una base limpia, entendible y ejecutable para ARFICARS.
 
-## Initial architecture baseline
+Está pensado para cumplir dos cosas a la vez:
+1. servir como base real para un producto de negocio
+2. dejar una base técnica seria que pueda crecer sin rehacer todo desde cero
 
-The initial architecture decisions for ARFICARS are already closed and reflected in this repository:
+En esta etapa, la prioridad no es meter muchas funcionalidades, sino arrancar con orden, con una arquitectura clara y con una base que se pueda explicar y mantener.
 
-- **Public frontend:** Nuxt
-- **Admin frontend:** Nuxt in a separate application
-- **Backend:** Spring Boot with Java
-- **Backend style:** modular monolith
-- **Backend internal structure:** hexagonal architecture by module
-- **Primary database:** PostgreSQL
-- **Identity provider:** Keycloak
-- **Binary media storage:** S3-compatible object storage
-- **Local infrastructure:** Docker Compose
-- **Application runtime in development:** backend and frontend apps run from IDE/editor, infrastructure runs in containers
+## Qué quiere ser ARFICARS
 
-This repository intentionally avoids premature complexity. The following are explicitly out of scope for the initial bootstrap:
-- business microservices
+ARFICARS quiere ser una plataforma que ayude al negocio en dos frentes.
+
+### 1. Parte operativa del taller
+El backoffice deberá permitir, de forma progresiva:
+- gestionar clientes
+- gestionar reservas o citas
+- llevar seguimiento interno de la actividad del taller
+- consultar balances o información de negocio
+- centralizar operaciones internas del equipo
+
+### 2. Parte comercial
+La plataforma también deberá permitir:
+- gestionar coches en venta
+- crear y editar fichas de vehículos
+- subir fotos y vídeos
+- publicar o despublicar coches
+- mostrar el catálogo en la web pública
+- captar interesados o leads
+
+Además, en una fase futura, habrá una app móvil en React Native para iOS y Android que usará la misma API y permitirá hacer tareas internas como sacar fotos, grabar vídeos o actualizar información desde el móvil.
+
+## Base de arquitectura inicial
+
+Estas decisiones de arquitectura ya están cerradas y este repositorio las refleja:
+
+- **Frontend público:** Nuxt
+- **Frontend admin:** Nuxt en una aplicación separada
+- **Backend:** Spring Boot con Java
+- **Estilo del backend:** monolito modular
+- **Estructura interna del backend:** arquitectura hexagonal por módulos
+- **Base de datos principal:** PostgreSQL
+- **Identidad y autenticación:** Keycloak
+- **Almacenamiento de ficheros binarios:** object storage compatible con S3
+- **Infraestructura local:** Docker Compose
+- **Ejecución en desarrollo:** backend y frontends desde IDE/editor; infraestructura en contenedores
+
+Este repositorio evita meter complejidad antes de tiempo. Por tanto, en este bootstrap inicial quedan fuera:
+- microservicios de negocio
 - Redis
-- Kafka or RabbitMQ
-- dedicated search engine
+- Kafka o RabbitMQ
+- motor de búsqueda dedicado
 - Kubernetes
-- heavy observability stack
-- buyer authentication flows
-- e-commerce implementation
-- deployment orchestration beyond basic CI
+- observabilidad pesada
+- autenticación de compradores
+- e-commerce
+- despliegues complejos más allá de un CI básico
 
-## Repository structure
+## Estructura del repositorio
 
 ```text
 .
@@ -71,113 +99,130 @@ This repository intentionally avoids premature complexity. The following are exp
 └─ README.md
 ````
 
-## Main components
+## Componentes principales
 
 ### `backend/arfi-core-api`
 
-Main business backend.
+Backend principal del sistema.
 
-It will host the ARFICARS core API as a Spring Boot application, following a modular monolith approach with explicit module boundaries and hexagonal architecture inside each module.
+Aquí vivirá la API central de ARFICARS como aplicación Spring Boot, siguiendo un enfoque de monolito modular, con módulos claros y arquitectura hexagonal dentro de cada uno.
+
+Esta API deberá servir tanto al backoffice web como a futuros clientes, incluida la app móvil administrativa.
 
 ### `frontend/apps/arfi-public-web`
 
-Public web application.
+Aplicación web pública.
 
-It will serve the public catalogue, vehicle detail pages, brand presentation and lead/contact entry points, with strong SEO orientation.
+Servirá el catálogo público, las fichas de vehículos, la presentación de la marca y los puntos de entrada para contacto o interés, con foco fuerte en SEO.
 
 ### `frontend/apps/arfi-admin-web`
 
-Admin web application.
+Aplicación web de administración.
 
-It will serve authenticated internal workflows such as vehicle management, media management, publication control and lead review.
+Servirá los flujos internos del negocio, incluyendo la gestión de vehículos, media, publicación y, más adelante, otras funciones del taller como clientes, reservas o seguimiento operativo.
 
 ### `infra/compose`
 
-Local infrastructure baseline.
+Base de infraestructura local.
 
-It will contain the Docker Compose setup for:
+Aquí irá la configuración de Docker Compose para levantar:
 
 * PostgreSQL
 * Keycloak
 * object storage
 
-The purpose of this directory is to provide repeatable local infrastructure without forcing the application runtimes themselves into containers during normal development.
+La idea de esta carpeta es tener una infraestructura local repetible sin obligar a ejecutar también las aplicaciones dentro de contenedores durante el desarrollo normal.
 
 ### `docs`
 
-Architecture and engineering documentation.
+Documentación de arquitectura e ingeniería.
 
-This directory will contain:
+Aquí se irá guardando:
 
-* architecture baseline
-* repository strategy
-* local development guide
-* ADRs
-* future technical reference documents
+* la base de arquitectura
+* la estrategia del repositorio
+* la guía de desarrollo local
+* los ADR
+* otros documentos técnicos del proyecto
 
-## Development model
+## Modelo de desarrollo
 
-The baseline development model is intentionally simple:
+El modelo inicial de desarrollo es simple:
 
-* infrastructure services run with Docker Compose
-* backend runs locally from IntelliJ
-* frontend apps run locally from VS Code or terminal
-* documentation is versioned in the same repository
-* CI validates the baseline continuously
+* la infraestructura corre con Docker Compose
+* el backend se ejecuta localmente desde IntelliJ
+* los frontends se ejecutan localmente desde VS Code o terminal
+* la documentación vive en el mismo repositorio
+* el CI valida la base técnica de forma continua
 
-This keeps iteration fast while preserving realistic dependencies.
+Esto permite iterar rápido sin perder dependencias realistas.
 
-## Current status
+## Estado actual
 
-This repository is currently in **bootstrap phase**.
+Este repositorio está en fase de **bootstrap**.
 
-The purpose of the current phase is to produce the initial baseline for development, including:
+El objetivo de esta fase es dejar lista la base inicial del desarrollo, incluyendo:
 
-* monorepo structure
-* base documentation
-* backend scaffolding
-* frontend scaffolding
-* local infrastructure setup
-* basic CI pipeline
+* estructura del monorepo
+* documentación base
+* scaffolding del backend
+* scaffolding de los frontends
+* infraestructura local mínima
+* pipeline básico de CI
 
-No business implementation is expected yet. At this point, structure and discipline matter more than ornamental progress.
+Todavía no toca implementar la lógica completa del negocio. En esta fase importa más el orden, la claridad y la coherencia técnica que aparentar avance con complejidad vacía.
 
-## Planned bootstrap deliverables
+## Alcance inicial del bootstrap
 
-The first milestone is considered complete only when all of the following exist:
+Aunque la visión del producto es amplia, este primer hito tiene un alcance controlado.
 
-* repository base structure
+El bootstrap inicial se centrará en dejar preparada la base técnica para:
+
+* backend principal
+* web pública
+* web admin
+* infraestructura local
+* documentación
+* CI básico
+
+Las funciones completas de gestión del taller, reporting y app móvil quedan contempladas como evolución del sistema, pero no forman parte de este primer arranque técnico.
+
+## Entregables previstos del bootstrap
+
+El primer hito solo se considerará cerrado cuando existan, como mínimo, estos elementos:
+
+* estructura base del repositorio
 * `README.md`
 * `docs/architecture.md`
-* `docs/adr/ADR-001.md` to `ADR-005.md`
+* `docs/adr/ADR-001.md` a `ADR-005.md`
 * `backend/arfi-core-api`
 * `frontend/apps/arfi-public-web`
 * `frontend/apps/arfi-admin-web`
 * `infra/compose/compose.yaml`
-* basic GitHub Actions CI workflow
-* evidence that the baseline builds and starts correctly
+* workflow básico de GitHub Actions
+* evidencia de que la base construye y arranca correctamente
 
-## Documentation
+## Documentación
 
-The repository documentation will progressively define:
+La documentación del repositorio irá definiendo poco a poco:
 
-* architecture baseline
-* repository strategy
-* local development conventions
-* architectural decision records
-* implementation boundaries for the bootstrap phase
+* la arquitectura base
+* la estrategia del repositorio
+* las normas de desarrollo local
+* los registros de decisiones de arquitectura
+* los límites de implementación de esta fase de bootstrap
 
-## Working principles
+## Principios de trabajo
 
-This repository follows a few non-negotiable principles:
+Este repositorio sigue algunos principios que no se negocian:
 
-* business usefulness first
-* modularity before distribution
-* explicit boundaries
-* no generic shared dumping ground
-* no decorative enterprise complexity
-* documentation that explains actual decisions, not aspirations
+* primero, utilidad real para el negocio
+* modularidad antes que distribución
+* límites claros entre partes del sistema
+* nada de módulos compartidos convertidos en vertedero
+* nada de complejidad “enterprise” por apariencia
+* documentación que explique decisiones reales, no intenciones vacías
 
-## License
+## Licencia
 
-License to be defined.
+Licencia pendiente de definir.
