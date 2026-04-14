@@ -47,7 +47,7 @@ La plataforma también deberá permitir:
 - mostrar el catálogo en la web pública
 - captar interesados o leads
 
-Además, en una fase futura, habrá una app móvil en React Native para iOS y Android que usará la misma API y permitirá hacer tareas internas como sacar fotos, grabar vídeos o actualizar información desde el móvil.
+Habrá una app móvil en React Native para iOS y Android que usará la misma API y permitirá hacer tareas internas como sacar fotos, grabar vídeos o actualizar información desde el móvil.
 
 ## Base de arquitectura inicial
 
@@ -63,17 +63,6 @@ Estas decisiones de arquitectura ya están cerradas y este repositorio las refle
 - **Almacenamiento de ficheros binarios:** object storage compatible con S3
 - **Infraestructura local:** Docker Compose
 - **Ejecución en desarrollo:** backend y frontends desde IDE/editor; infraestructura en contenedores
-
-Este repositorio evita meter complejidad antes de tiempo. Por tanto, en este bootstrap inicial quedan fuera:
-- microservicios de negocio
-- Redis
-- Kafka o RabbitMQ
-- motor de búsqueda dedicado
-- Kubernetes
-- observabilidad pesada
-- autenticación de compradores
-- e-commerce
-- despliegues complejos más allá de un CI básico
 
 ## Estructura del repositorio
 
@@ -144,84 +133,6 @@ Aquí se irá guardando:
 * la guía de desarrollo local
 * los ADR
 * otros documentos técnicos del proyecto
-
-## Modelo de desarrollo
-
-El modelo inicial de desarrollo es simple:
-
-* la infraestructura corre con Docker Compose
-* el backend se ejecuta localmente desde IntelliJ
-* los frontends se ejecutan localmente desde VS Code o terminal
-* la documentación vive en el mismo repositorio
-* el CI valida la base técnica de forma continua
-
-Esto permite iterar rápido sin perder dependencias realistas.
-
-## Estado actual
-
-Este repositorio está en fase de **bootstrap**.
-
-El objetivo de esta fase es dejar lista la base inicial del desarrollo, incluyendo:
-
-* estructura del monorepo
-* documentación base
-* scaffolding del backend
-* scaffolding de los frontends
-* infraestructura local mínima
-* pipeline básico de CI
-
-Todavía no toca implementar la lógica completa del negocio. En esta fase importa más el orden, la claridad y la coherencia técnica que aparentar avance con complejidad vacía.
-
-## Alcance inicial del bootstrap
-
-Aunque la visión del producto es amplia, este primer hito tiene un alcance controlado.
-
-El bootstrap inicial se centrará en dejar preparada la base técnica para:
-
-* backend principal
-* web pública
-* web admin
-* infraestructura local
-* documentación
-* CI básico
-
-Las funciones completas de gestión del taller, reporting y app móvil quedan contempladas como evolución del sistema, pero no forman parte de este primer arranque técnico.
-
-## Entregables previstos del bootstrap
-
-El primer hito solo se considerará cerrado cuando existan, como mínimo, estos elementos:
-
-* estructura base del repositorio
-* `README.md`
-* `docs/architecture.md`
-* `docs/adr/ADR-001.md` a `ADR-005.md`
-* `backend/arfi-core-api`
-* `frontend/apps/arfi-public-web`
-* `frontend/apps/arfi-admin-web`
-* `infra/compose/compose.yaml`
-* workflow básico de GitHub Actions
-* evidencia de que la base construye y arranca correctamente
-
-## Documentación
-
-La documentación del repositorio irá definiendo poco a poco:
-
-* la arquitectura base
-* la estrategia del repositorio
-* las normas de desarrollo local
-* los registros de decisiones de arquitectura
-* los límites de implementación de esta fase de bootstrap
-
-## Principios de trabajo
-
-Este repositorio sigue algunos principios que no se negocian:
-
-* primero, utilidad real para el negocio
-* modularidad antes que distribución
-* límites claros entre partes del sistema
-* nada de módulos compartidos convertidos en vertedero
-* nada de complejidad “enterprise” por apariencia
-* documentación que explique decisiones reales, no intenciones vacías
 
 ## Licencia
 
